@@ -81,17 +81,17 @@ namespace LibyanaHub.Services.DataAccess.Repository
 			return result;
 		}
 
-		public async Task Remove(T entity)
+		public void Remove(T entity)
 		{
 			dbSet.Remove(entity);
 		}
 
-		public async Task RemoveRange(IEnumerable<T> entity)
+		public void RemoveRange(IEnumerable<T> entity)
 		{
 			dbSet.RemoveRange(entity);
 		}
 
-		public async Task<bool> IsCheckDuplicate(Expression<Func<T, bool>> filter)
+		public bool IsCheckDuplicate(Expression<Func<T, bool>> filter)
 		{
 			IQueryable<T> query = dbSet;
 

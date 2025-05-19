@@ -15,9 +15,9 @@ namespace LibyanaHub.Services.DataAccess.IRepository
 
 		Task<bool> Save();
 		Task<bool> Add(T entity);
-		Task Remove(T entity);
-		Task RemoveRange(IEnumerable<T> entity);
-		Task<bool> IsCheckDuplicate(Expression<Func<T, bool>> filter);
+		void Remove(T entity);
+		void RemoveRange(IEnumerable<T> entity);
+		bool IsCheckDuplicate(Expression<Func<T, bool>> filter);
 		Task<bool> IsCheckDuplicateAsync(Expression<Func<T, bool>> filter);
 	}
 }

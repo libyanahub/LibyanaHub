@@ -9,24 +9,17 @@ using System.Threading.Tasks;
 
 namespace LibyanaHub.Services.DataAccess.Repository
 {
-	public class UnitOfWork : IUnitOfWork
+	public class DbUnitOfWork : IDbUnitOfWork
 	{
 		private AppDbContext _db;
 		public ITestRepository Test { get; private set; }
 
 
-		public UnitOfWork(AppDbContext db)
+		public DbUnitOfWork(AppDbContext db)
 		{
 			_db = db;
+
 			Test = new TestRepository(_db);
-
-
-			//ProductImage = new ProductImageRepository(_db);
 		}
-
-		//public void Save()
-		//{
-		//	_db.SaveChanges();
-		//}
 	}
 }

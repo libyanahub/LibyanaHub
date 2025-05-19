@@ -2,8 +2,8 @@
 
 namespace LibyanaHub.Services.DataAccess.IRepository
 {
-    public class ITestRepository : IRepository<Test>
+    public interface ITestRepository : IRepository<Test>
 	{
-		Task Update(Test test);
+		void Update(Test test);
 	}
 }

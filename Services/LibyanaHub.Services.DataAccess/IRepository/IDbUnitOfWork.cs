@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace LibyanaHub.Services.DataAccess.IRepository
 {
-    public interface IUnitOfWork
+    public interface IDbUnitOfWork
     {
 		ITestRepository Test { get; }
-
-		void Save();
 	}
 }

@@ -15,9 +15,9 @@ namespace LibyanaHub.Services.DataAccess.Repository
 
 		}
 
-		public async Task Update(Test test)
+		public void Update(Test test)
 		{
-			await _dbContext.Tests.Update(test);
+			_dbContext.Tests.Update(test);
 		}
 	}
 }
