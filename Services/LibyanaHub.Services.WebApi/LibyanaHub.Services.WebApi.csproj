@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LibyanaHub.Services.Business\LibyanaHub.Services.Business.csproj" />
-    <ProjectReference Include="..\LibyanaHub.Services.DataAccess\LibyanaHub.Services.DataAccess.csproj" />
+    <ProjectReference Include="..\LibyanaHub.Services.Business\LibyanaHub.Services.Application.csproj" />
+    <ProjectReference Include="..\LibyanaHub.Services.DataAccess\LibyanaHub.Services.Infrastructure.csproj" />
     <ProjectReference Include="..\LibyanaHub.Services.Domain\LibyanaHub.Services.Domain.csproj" />
   </ItemGroup>
 

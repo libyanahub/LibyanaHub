@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 
-namespace LibyanaHub.Services.DataAccess.Data
+namespace LibyanaHub.Services.Infrastructure.Data
 {
 	public class AppDbContext : DbContext
 	{

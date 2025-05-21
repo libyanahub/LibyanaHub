@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibyanaHub.Services.DataAccess.IRepository
+namespace LibyanaHub.Services.Infrastructure.IRepository
 {
     public interface IDbUnitOfWork
     {

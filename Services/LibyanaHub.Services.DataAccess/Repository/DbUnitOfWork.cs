@@ -1,5 +1,5 @@
-﻿using LibyanaHub.Services.DataAccess.Data;
-using LibyanaHub.Services.DataAccess.IRepository;
+﻿using LibyanaHub.Services.Infrastructure.Data;
+using LibyanaHub.Services.Infrastructure.IRepository;
 using LibyanaHub.Services.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibyanaHub.Services.DataAccess.Repository
+namespace LibyanaHub.Services.Infrastructure.Repository
 {
 	public class DbUnitOfWork : IDbUnitOfWork
 	{

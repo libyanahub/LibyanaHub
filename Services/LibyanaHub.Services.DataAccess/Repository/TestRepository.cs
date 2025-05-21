@@ -1,9 +1,9 @@
-﻿using LibyanaHub.Services.DataAccess.Data;
-using LibyanaHub.Services.DataAccess.IRepository;
+﻿using LibyanaHub.Services.Infrastructure.Data;
+using LibyanaHub.Services.Infrastructure.IRepository;
 using LibyanaHub.Services.Domain.Entities;
 
 
-namespace LibyanaHub.Services.DataAccess.Repository
+namespace LibyanaHub.Services.Infrastructure.Repository
 {
     public class TestRepository : Repository<Test>, ITestRepository
 	{

@@ -1,6 +1,6 @@
 ﻿using LibyanaHub.Services.Domain.Entities;
 
-namespace LibyanaHub.Services.DataAccess.IRepository
+namespace LibyanaHub.Services.Infrastructure.IRepository
 {
     public interface ITestRepository : IRepository<Test>
 	{
