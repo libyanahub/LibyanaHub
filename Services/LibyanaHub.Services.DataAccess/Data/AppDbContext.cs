@@ -44,7 +44,7 @@ namespace LibyanaHub.Services.Infrastructure.Data
 			}
 		}
 
-		public virtual DbSet<Test>? Tests { get; set; } = null;
+		public virtual DbSet<FitnessCategory>? FitnessCategories { get; set; } = null;
 
 	}
 }

@@ -8,6 +8,6 @@ namespace LibyanaHub.Services.Infrastructure.IRepository
 {
     public interface IDbUnitOfWork
     {
-		ITestRepository Test { get; }
+		IFitnessCategoryRepository Test { get; }
 	}
 }

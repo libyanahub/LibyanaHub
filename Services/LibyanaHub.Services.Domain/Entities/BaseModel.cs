@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LibyanaHub.Services.Domain.Entities
 {
-    public class BaseModel
-    {
-    }
+	public abstract class BaseModel
+	{
+
+		[Key]
+		public int Id { get; set; }
+
+		[Required]
+		public DateTimeOffset CreateDate { get; set; } = DateTimeOffset.UtcNow;
+
+		public DateTimeOffset? UpdateDate { get; set; }
+	}
 }

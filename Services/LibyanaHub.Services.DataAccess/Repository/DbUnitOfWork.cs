@@ -12,14 +12,14 @@ namespace LibyanaHub.Services.Infrastructure.Repository
 	public class DbUnitOfWork : IDbUnitOfWork
 	{
 		private AppDbContext _db;
-		public ITestRepository Test { get; private set; }
+		public IFitnessCategoryRepository Test { get; private set; }
 
 
 		public DbUnitOfWork(AppDbContext db)
 		{
 			_db = db;
 
-			Test = new TestRepository(_db);
+			Test = new FitnessCategoryRepository(_db);
 		}
 	}
 }

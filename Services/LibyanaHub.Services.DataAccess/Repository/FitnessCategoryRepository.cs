@@ -5,19 +5,19 @@ using LibyanaHub.Services.Domain.Entities;
 
 namespace LibyanaHub.Services.Infrastructure.Repository
 {
-    public class TestRepository : Repository<Test>, ITestRepository
+    public class FitnessCategoryRepository : Repository<FitnessCategory>, IFitnessCategoryRepository
 	{
 		private readonly AppDbContext _dbContext;
 
-		public TestRepository(AppDbContext dbContext) : base(dbContext)
+		public FitnessCategoryRepository(AppDbContext dbContext) : base(dbContext)
 		{
 			_dbContext = dbContext;
 
 		}
 
-		public void Update(Test test)
+		public void Update(FitnessCategory fitnessCategory)
 		{
-			_dbContext.Tests.Update(test);
+			_dbContext.FitnessCategories.Update(fitnessCategory);
 		}
 	}
 }
