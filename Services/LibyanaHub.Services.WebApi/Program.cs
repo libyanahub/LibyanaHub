@@ -1,6 +1,6 @@
-using LibyanaHub.Services.DataAccess.Data;
-using LibyanaHub.Services.DataAccess.IRepository;
-using LibyanaHub.Services.DataAccess.Repository;
+using LibyanaHub.Services.Infrastructure.Data;
+using LibyanaHub.Services.Infrastructure.IRepository;
+using LibyanaHub.Services.Infrastructure.Repository;
 using static LibyanaHub.Services.WebApi.Helper.SwaggerExampleSchema;
 
 var builder = WebApplication.CreateBuilder(args);

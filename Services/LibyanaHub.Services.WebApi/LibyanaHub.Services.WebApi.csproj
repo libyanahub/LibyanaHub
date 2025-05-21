@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LibyanaHub.Services.Business\LibyanaHub.Services.Application.csproj" />
-    <ProjectReference Include="..\LibyanaHub.Services.DataAccess\LibyanaHub.Services.Infrastructure.csproj" />
+    <ProjectReference Include="..\LibyanaHub.Services.Application\LibyanaHub.Services.Application.csproj" />
     <ProjectReference Include="..\LibyanaHub.Services.Domain\LibyanaHub.Services.Domain.csproj" />
+    <ProjectReference Include="..\LibyanaHub.Services.Infrastructure\LibyanaHub.Services.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
