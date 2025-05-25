@@ -5,7 +5,7 @@ using LibyanaHub.Services.Domain.Entities;
 
 namespace LibyanaHub.Services.Infrastructure.Repository
 {
-    public class FitnessCategoryRepository : Repository<FitnessCategory>, IFitnessCategoryRepository
+	public class FitnessCategoryRepository : Repository<FitnessCategory>, IFitnessCategoryRepository
 	{
 		private readonly AppDbContext _dbContext;
 

@@ -8,6 +8,9 @@ namespace LibyanaHub.Services.Infrastructure.IRepository
 {
     public interface IDbUnitOfWork
     {
-		IFitnessCategoryRepository Test { get; }
+		IFitnessCategoryRepository FitnessCategoryRepository { get; }
+
+
+		IApplicationUserRepository ApplicationUserRepository { get; }
 	}
 }
