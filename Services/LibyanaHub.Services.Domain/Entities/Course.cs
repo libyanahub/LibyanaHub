@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibyanaHub.Services.Domain.Entities
 {
-	public class FitnessCategory : BaseEntity
+	public class Course : BaseEntity
 	{
-		public string Name { get; set; }
+		public string Title { get; set; }
 		public string Description { get; set; }
-		public string IconUrl { get; set; }
-		public string ImageUrl { get; set; }
 	}
 }
