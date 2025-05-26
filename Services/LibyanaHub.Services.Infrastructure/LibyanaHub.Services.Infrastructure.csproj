@@ -21,6 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Shared\LibyanaHub.Shared.StaticData\LibyanaHub.Shared.StaticData.csproj" />
 	  <ProjectReference Include="..\LibyanaHub.Services.Domain\LibyanaHub.Services.Domain.csproj" />
 	</ItemGroup>
 

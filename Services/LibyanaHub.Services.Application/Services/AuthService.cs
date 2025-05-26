@@ -1,23 +1,25 @@
-﻿
-using LibyanaHub.Services.Application.IServices;
+﻿using LibyanaHub.Services.Application.IServices;
 using LibyanaHub.Services.Domain.Entities.Identity;
-using LibyanaHub.Services.Infrastructure.Data;
 using LibyanaHub.Services.Infrastructure.IRepository;
-using LibyanaHub.Services.Infrastructure.Repository;
-using Mango.Services.AuthAPI.Models.Dtos;
+using LibyanaHub.Shared.StaticData;
+using LibyanaHub.Services.Domain.Dtos;
 using Microsoft.AspNetCore.Identity;
+using System.Globalization;
 
-namespace Mango.Services.AuthAPI.Service
+namespace LibyanaHub.Services.Application.Services
 {
 	public class AuthService : IAuthService
 	{
 		private readonly IDbUnitOfWork _unitOfWork;
 		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly RoleManager<IdentityRole> _roleManager;
+		private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 		private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-		public AuthService(IDbUnitOfWork unitOfWork, IJwtTokenGenerator jwtTokenGenerator,
-			UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+		public AuthService(
+			IDbUnitOfWork unitOfWork,
+			IJwtTokenGenerator jwtTokenGenerator,
+			UserManager<ApplicationUser> userManager,
+			RoleManager<IdentityRole<Guid>> roleManager)
 		{
 			_unitOfWork = unitOfWork;
 			_jwtTokenGenerator = jwtTokenGenerator;
@@ -25,98 +27,92 @@ namespace Mango.Services.AuthAPI.Service
 			_roleManager = roleManager;
 		}
 
-		public async Task<bool> AssignRole(string email, string roleName)
+		public async Task<bool> ChangeRole(string email, string roleName)
 		{
-			var user = await _unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Email.ToLower() == email.ToLower());
-			if (user != null)
-			{
-				if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
-				{
-					//create role if it does not exist
-					_roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
-				}
-				await _userManager.AddToRoleAsync(user, roleName);
-				return true;
-			}
-			return false;
+			var user = await _unitOfWork.ApplicationUser
+				.GetFirstOrDefault(u => u.Email.ToLower() == email.ToLower());
+			if (user == null) return false;
 
+			if (!await _roleManager.RoleExistsAsync(roleName))
+			{
+				var role = new IdentityRole<Guid>(roleName)
+				{
+					Id = Guid.NewGuid(),
+					NormalizedName = roleName.ToUpperInvariant()
+				};
+				await _roleManager.CreateAsync(role);
+			}
+
+			await _userManager.AddToRoleAsync(user, roleName);
+			return true;
+		}
+
+		public async Task<bool> AssignRole(string phoneNumber, string roleName)
+		{
+			var user = await _unitOfWork.ApplicationUser
+				.GetFirstOrDefault(u => u.UserName.ToLower() == phoneNumber.ToLower());
+			if (user == null) return false;
+
+			roleName = CultureInfo.CurrentCulture.TextInfo
+				.ToTitleCase(roleName.ToLower());
+
+			if (!await _roleManager.RoleExistsAsync(roleName))
+			{
+				var role = new IdentityRole<Guid>(roleName)
+				{
+					Id = Guid.NewGuid(),
+					NormalizedName = roleName.ToUpperInvariant()
+				};
+				await _roleManager.CreateAsync(role);
+			}
+
+			await _userManager.AddToRoleAsync(user, roleName);
+			return true;
 		}
 
 		public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
 		{
-			var all = await _unitOfWork.ApplicationUserRepository.GetAll();
+			var user = await _unitOfWork.ApplicationUser
+				.GetFirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
 
+			var isValid = user != null
+					   && await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
 
-			var user = await _unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
+			if (!isValid)
+				return new LoginResponseDto { User = null, Token = "" };
 
-			bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
-
-			if (user == null || isValid == false)
-			{
-				return new LoginResponseDto() { User = null, Token = "" };
-			}
-
-			//if user was found , Generate JWT Token
 			var roles = await _userManager.GetRolesAsync(user);
 			var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
-			UserDto userDTO = new()
+			var userDto = new UserDto
 			{
-				Email = user.Email,
 				ID = user.Id,
+				Email = user.Email,
 				Name = user.Name,
 				PhoneNumber = user.PhoneNumber
 			};
 
-			LoginResponseDto loginResponseDto = new LoginResponseDto()
-			{
-				User = userDTO,
-				Token = token
-			};
-
-			return loginResponseDto;
+			return new LoginResponseDto { User = userDto, Token = token };
 		}
 
 		public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
 		{
-			ApplicationUser user = new()
+			var user = new ApplicationUser
 			{
 				UserName = registrationRequestDto.PhoneNumber,
 				Email = registrationRequestDto.Email,
-				NormalizedEmail = registrationRequestDto.Email.ToUpper(),
+				NormalizedEmail = registrationRequestDto.Email.ToUpperInvariant(),
 				Name = registrationRequestDto.Name,
 				PhoneNumber = registrationRequestDto.PhoneNumber
 			};
 
-			try
-			{
-				var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
-				if (result.Succeeded)
-				{
-					var userToReturn = await _unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.UserName == registrationRequestDto.PhoneNumber);
+			var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
+			if (!result.Succeeded)
+				return result.Errors.First().Description;
 
-					UserDto userDto = new()
-					{
-						Email = userToReturn.Email,
-						ID = userToReturn.Id,
-						Name = userToReturn.Name,
-						PhoneNumber = userToReturn.PhoneNumber
-					};
-
-					return "";
-
-				}
-				else
-				{
-					return result.Errors.FirstOrDefault().Description;
-				}
-
-			}
-			catch (Exception ex)
-			{
-				return ex.Message;
-			}
-			//return "Error Encountered";
+			// Immediately assign Trainee role
+			await _userManager.AddToRoleAsync(user, SD.Roles.Trainee);
+			return string.Empty;
 		}
 	}
 }

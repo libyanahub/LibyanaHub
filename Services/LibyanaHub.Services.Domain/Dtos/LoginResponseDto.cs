@@ -1,4 +1,4 @@
-﻿namespace Mango.Services.AuthAPI.Models.Dtos
+﻿namespace LibyanaHub.Services.Domain.Dtos
 {
 	public class LoginResponseDto
 	{

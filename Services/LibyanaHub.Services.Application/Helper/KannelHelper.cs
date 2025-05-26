@@ -1,6 +1,6 @@
 ﻿using LibyanaHub.Services.Domain.Models.Kannel;
 using System.Text.RegularExpressions;
-using LibyanaHub.Services.Domain.StaticData;
+using LibyanaHub.Shared.StaticData;
 
 
 namespace LibyanaHub.Services.Application.Helper

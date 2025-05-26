@@ -1,5 +1,5 @@
 ﻿using LibyanaHub.Services.Application.IServices;
-using Mango.Services.AuthAPI.Models.Dtos;
+using LibyanaHub.Services.Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibyanaHub.Services.WebApi.Controllers

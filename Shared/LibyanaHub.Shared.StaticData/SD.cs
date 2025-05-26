@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibyanaHub.Services.Domain.StaticData
+namespace LibyanaHub.Shared.StaticData
 {
 	public static class SD
 	{

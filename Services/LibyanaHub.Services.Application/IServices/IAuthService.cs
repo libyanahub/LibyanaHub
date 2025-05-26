@@ -1,4 +1,4 @@
-﻿using Mango.Services.AuthAPI.Models.Dtos;
+﻿using LibyanaHub.Services.Domain.Dtos;
 
 namespace LibyanaHub.Services.Application.IServices
 {

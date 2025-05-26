@@ -1,72 +1,70 @@
 ﻿using LibyanaHub.Services.Domain.Entities.Identity;
-using LibyanaHub.Services.Domain.StaticData;
 using LibyanaHub.Services.Infrastructure.Data;
+using LibyanaHub.Shared.StaticData;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace LibyanaHub.Services.Infrastructure.DbInitializer
 {
-    public class DbInitializer : IDbInitializer
+	public class DbInitializer : IDbInitializer
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly RoleManager<IdentityRole> _roleManager;
+		private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 		private readonly AppDbContext _db;
 
 		public DbInitializer(
 			UserManager<ApplicationUser> userManager,
-			RoleManager<IdentityRole> roleManager,
+			RoleManager<IdentityRole<Guid>> roleManager,
 			AppDbContext db)
 		{
-			_roleManager = roleManager;
 			_userManager = userManager;
+			_roleManager = roleManager;
 			_db = db;
 		}
 
 		public void Initialize()
 		{
+			// 1) apply any pending migrations
+			if (_db.Database.GetPendingMigrations().Any())
+				_db.Database.Migrate();
 
-
-			//migrations if they are not applied
-			try
+			// 2) seed roles
+			var roles = new[] {
+				SD.Roles.Admin,
+				SD.Roles.Employee,
+				SD.Roles.Commercial,
+				SD.Roles.Coach,
+				SD.Roles.Trainee
+			};
+			foreach (var roleName in roles)
 			{
-				if (_db.Database.GetPendingMigrations().Count() > 0)
+				if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
 				{
-					_db.Database.Migrate();
+					var role = new IdentityRole<Guid>(roleName)
+					{
+						Id = Guid.NewGuid(),
+						NormalizedName = roleName.ToUpperInvariant()
+					};
+					_roleManager.CreateAsync(role).GetAwaiter().GetResult();
 				}
 			}
-			catch (Exception ex) { }
 
-
-
-			//create roles if they are not created
-			if (!_roleManager.RoleExistsAsync(SD.Roles.Trainee).GetAwaiter().GetResult())
+			// 3) seed default admin user
+			const string adminEmail = "m.shehob@libyana.ly";
+			if (_userManager.FindByEmailAsync(adminEmail).GetAwaiter().GetResult() == null)
 			{
-				_roleManager.CreateAsync(new IdentityRole(SD.Roles.Trainee)).GetAwaiter().GetResult();
-				_roleManager.CreateAsync(new IdentityRole(SD.Roles.Employee)).GetAwaiter().GetResult();
-				_roleManager.CreateAsync(new IdentityRole(SD.Roles.Admin)).GetAwaiter().GetResult();
-				_roleManager.CreateAsync(new IdentityRole(SD.Roles.Coach)).GetAwaiter().GetResult();
-
-
-				//if roles are not created, then we will create admin user as well
-				_userManager.CreateAsync(new ApplicationUser
+				var adminUser = new ApplicationUser
 				{
+					Id = Guid.NewGuid(),
 					UserName = "218947776156",
-					Email = "m.shehob@libyana.ly",
+					Email = adminEmail,
+					NormalizedEmail = adminEmail.ToUpperInvariant(),
 					Name = "Mahmood Shehob",
-					PhoneNumber = "218947776156",
-					//StreetAddress = "Abu-Setta",
-					//State = "YF",
-					//PostalCode = "23422",
-					//City = "Yefren"
-				}, "ASDasd@123").GetAwaiter().GetResult();
-
-				ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "m.shehob@libyana.ly");
-
-				_userManager.AddToRoleAsync(user, SD.Roles.Admin).GetAwaiter().GetResult();
+					PhoneNumber = "218947776156"
+				};
+				_userManager.CreateAsync(adminUser, "ASDasd@123").GetAwaiter().GetResult();
+				_userManager.AddToRoleAsync(adminUser, SD.Roles.Admin).GetAwaiter().GetResult();
 			}
-
-			return;
 		}
 	}
 }

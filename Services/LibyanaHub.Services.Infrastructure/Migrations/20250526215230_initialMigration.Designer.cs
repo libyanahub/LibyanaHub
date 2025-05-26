@@ -4,6 +4,7 @@ using LibyanaHub.Services.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibyanaHub.Services.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526215230_initialMigration")]
+    partial class initialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +65,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Coaches");
+                    b.ToTable("Coach");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.CoachCertificate", b =>
@@ -102,7 +105,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasIndex("CoachId");
 
-                    b.ToTable("CoachCertificates");
+                    b.ToTable("CoachCertificate");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.CoachExperience", b =>
@@ -142,7 +145,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasIndex("CoachId");
 
-                    b.ToTable("CoachExperiences");
+                    b.ToTable("CoachExperience");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.CoachSocialLink", b =>
@@ -172,7 +175,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasIndex("CoachId");
 
-                    b.ToTable("CoachSocialLinks");
+                    b.ToTable("CoachSocialLink");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.CoachSpecialization", b =>
@@ -206,7 +209,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasIndex("FitnessCategoryId");
 
-                    b.ToTable("CoachSpecializations");
+                    b.ToTable("CoachSpecialization");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.Course", b =>
@@ -231,7 +234,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Course");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.CourseCompletion", b =>
@@ -261,7 +264,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("CourseCompletions");
+                    b.ToTable("CourseCompletion");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.FitnessCategory", b =>
@@ -294,7 +297,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FitnessCategories");
+                    b.ToTable("FitnessCategory");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.Identity.ApplicationUser", b =>
@@ -387,7 +390,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Trainees");
+                    b.ToTable("Trainee");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.TraineeCertificate", b =>
@@ -419,7 +422,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("TraineeCertificates");
+                    b.ToTable("TraineeCertificate");
                 });
 
             modelBuilder.Entity("LibyanaHub.Services.Domain.Entities.UserDomain", b =>
@@ -458,7 +461,7 @@ namespace LibyanaHub.Services.Infrastructure.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("UserDomains");
+                    b.ToTable("UserDomain");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>

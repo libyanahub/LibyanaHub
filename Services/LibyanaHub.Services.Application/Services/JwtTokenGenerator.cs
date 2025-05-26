@@ -1,6 +1,6 @@
-﻿using LibyanaHub.Services.Domain.Entities.Identity;
+﻿using LibyanaHub.Services.Application.IServices;
+using LibyanaHub.Services.Domain.Entities.Identity;
 using Mango.Services.AuthAPI.Models;
-using LibyanaHub.Services.Application.IServices;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +12,7 @@ namespace Mango.Services.AuthAPI.Service
 	public class JwtTokenGenerator : IJwtTokenGenerator
 	{
 		private readonly JwtOptions _jwtOptions;
+
 		public JwtTokenGenerator(IOptions<JwtOptions> jwtOptions)
 		{
 			_jwtOptions = jwtOptions.Value;
@@ -19,29 +20,30 @@ namespace Mango.Services.AuthAPI.Service
 
 		public string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles)
 		{
+			var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
 			var tokenHandler = new JwtSecurityTokenHandler();
 
-			var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
-
-			var claimList = new List<Claim>
+			var claims = new List<Claim>
 			{
-				new Claim(JwtRegisteredClaimNames.Email,applicationUser.Email),
-				new Claim(JwtRegisteredClaimNames.Sub,applicationUser.Id),
-				new Claim(JwtRegisteredClaimNames.Name,applicationUser.UserName)
+				new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id.ToString()),
+				new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email),
+				new Claim(ClaimTypes.NameIdentifier, applicationUser.Id.ToString()),
+				new Claim(JwtRegisteredClaimNames.UniqueName, applicationUser.UserName)
 			};
+			claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
-			claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-			var tokenDescriptor = new SecurityTokenDescriptor
+			var descriptor = new SecurityTokenDescriptor
 			{
-				Audience = _jwtOptions.Audience,
+				Subject = new ClaimsIdentity(claims),
+				Expires = DateTime.UtcNow.AddSeconds(30),
 				Issuer = _jwtOptions.Issuer,
-				Subject = new ClaimsIdentity(claimList),
-				Expires = DateTime.UtcNow.AddDays(7),
-				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+				Audience = _jwtOptions.Audience,
+				SigningCredentials = new SigningCredentials(
+					new SymmetricSecurityKey(key),
+					SecurityAlgorithms.HmacSha256Signature)
 			};
 
-			var token = tokenHandler.CreateToken(tokenDescriptor);
+			var token = tokenHandler.CreateToken(descriptor);
 			return tokenHandler.WriteToken(token);
 		}
 	}

@@ -17,7 +17,7 @@ namespace LibyanaHub.Services.Infrastructure.Repository
 
 		public void Update(FitnessCategory fitnessCategory)
 		{
-			_dbContext.FitnessCategories.Update(fitnessCategory);
+			//_dbContext.FitnessCategories.Update(fitnessCategory);
 		}
 	}
 }
