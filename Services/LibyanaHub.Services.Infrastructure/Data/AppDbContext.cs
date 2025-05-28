@@ -30,10 +30,17 @@ namespace LibyanaHub.Services.Infrastructure.Data
 			if (_config != null && !optionsBuilder.IsConfigured)
 			{
 				if (_config.GetSection("ASPNETCORE_ENVIRONMENT").Value == "Development")
-				{
-					optionsBuilder.UseSqlServer("Server=localhost\\mshehobsql,1433;Database=LibyanaHubTest;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
-				}
-				else
+                {
+                    if (Environment.MachineName.ToLower() == "HQB-L3-18101974".ToLower())
+                    {
+                        optionsBuilder.UseSqlServer("Server=HQB-L3-18101974\\SHEHOBSQLSER;Database=LibyanaHubTest;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
+                    }
+                    else
+                    {
+                        optionsBuilder.UseSqlServer("Server=localhost\\mshehobsql,1433;Database=LibyanaHubTest;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
+                    }
+                }
+                else
 				{
 					optionsBuilder.UseSqlServer("Server=localhost\\mshehobsql,1433;Database=LibyanaHubProd;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
 				}
