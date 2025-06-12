@@ -1,6 +1,6 @@
 ﻿using LibyanaHub.Services.Application.Helper;
 using LibyanaHub.Services.Application.IServices;
-using LibyanaHub.Services.Domain.Models.Kannel;
+using LibyanaHub.Services.Models.Kannel;
 using Microsoft.Extensions.Configuration;
 
 

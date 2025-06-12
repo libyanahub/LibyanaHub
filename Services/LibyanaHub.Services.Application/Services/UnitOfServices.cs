@@ -15,7 +15,7 @@ namespace LibyanaHub.Services.Application.Services
 		public IKannelService KannelService { get; set; }
 		public IAuthService AuthService { get; set; }
 		public IJwtTokenGenerator JwtTokenGenerator { get; set; }
-
+		public ICourseService CourseService { get; set; }
 
 		public UnitOfServices(
 			IConfiguration config ,
@@ -24,11 +24,13 @@ namespace LibyanaHub.Services.Application.Services
 			UserManager<ApplicationUser> userManager,
 			RoleManager<IdentityRole<Guid>> roleManager)
 		{
-			KannelService = new KannelService(config , this);
-			
+			AuthService = new AuthService(dbUnitOfWork, JwtTokenGenerator, userManager, roleManager);
+
 			JwtTokenGenerator = new JwtTokenGenerator(jwtOptions);
 			
-			AuthService = new AuthService(dbUnitOfWork, JwtTokenGenerator, userManager, roleManager);
+			KannelService = new KannelService(config , this);
+
+			CourseService = new CourseService(dbUnitOfWork, this);
 		}
 	}
 }

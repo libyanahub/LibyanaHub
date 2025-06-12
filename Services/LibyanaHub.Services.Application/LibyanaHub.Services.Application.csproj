@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Mapster.Core" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.5" />
@@ -15,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LibyanaHub.Services.Domain\LibyanaHub.Services.Domain.csproj" />
     <ProjectReference Include="..\LibyanaHub.Services.Infrastructure\LibyanaHub.Services.Infrastructure.csproj" />
+    <ProjectReference Include="..\LibyanaHub.Services.Models\LibyanaHub.Services.Models.csproj" />
   </ItemGroup>
 
 </Project>

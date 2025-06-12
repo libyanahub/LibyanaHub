@@ -1,4 +1,4 @@
-﻿using LibyanaHub.Services.Domain.Dtos;
+﻿using LibyanaHub.Services.Models.User;
 
 namespace LibyanaHub.Services.Application.IServices
 {

@@ -1,5 +1,5 @@
 ﻿using LibyanaHub.Services.Application.IServices;
-using LibyanaHub.Services.Domain.Dtos;
+using LibyanaHub.Services.Models.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibyanaHub.Services.WebApi.Controllers

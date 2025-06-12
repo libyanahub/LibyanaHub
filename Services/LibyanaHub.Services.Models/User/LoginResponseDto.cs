@@ -1,4 +1,4 @@
-﻿namespace LibyanaHub.Services.Domain.Dtos
+﻿namespace LibyanaHub.Services.Models.User
 {
 	public class LoginResponseDto
 	{

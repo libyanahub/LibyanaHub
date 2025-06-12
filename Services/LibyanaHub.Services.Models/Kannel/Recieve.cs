@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibyanaHub.Services.Domain.Models.Kannel
+namespace LibyanaHub.Services.Models.Kannel
 {
 	public class Recieve
 	{

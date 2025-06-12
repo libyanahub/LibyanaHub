@@ -2,7 +2,7 @@
 using LibyanaHub.Services.Domain.Entities.Identity;
 using LibyanaHub.Services.Infrastructure.IRepository;
 using LibyanaHub.Shared.StaticData;
-using LibyanaHub.Services.Domain.Dtos;
+using LibyanaHub.Services.Models.User;
 using Microsoft.AspNetCore.Identity;
 using System.Globalization;
 

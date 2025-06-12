@@ -1,4 +1,4 @@
-﻿using LibyanaHub.Services.Domain.Models.Kannel;
+﻿using LibyanaHub.Services.Models.Kannel;
 using System.Text.RegularExpressions;
 using LibyanaHub.Shared.StaticData;
 

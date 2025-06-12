@@ -10,7 +10,8 @@ namespace LibyanaHub.Services.Infrastructure.IRepository
     {
 		IFitnessCategoryRepository FitnessCategory { get; }
 
-
 		IApplicationUserRepository ApplicationUser { get; }
+
+		ICourseRepository Course { get; }
 	}
 }

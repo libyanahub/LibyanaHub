@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +22,7 @@
     <ProjectReference Include="..\LibyanaHub.Services.Application\LibyanaHub.Services.Application.csproj" />
     <ProjectReference Include="..\LibyanaHub.Services.Domain\LibyanaHub.Services.Domain.csproj" />
     <ProjectReference Include="..\LibyanaHub.Services.Infrastructure\LibyanaHub.Services.Infrastructure.csproj" />
+    <ProjectReference Include="..\LibyanaHub.Services.Models\LibyanaHub.Services.Models.csproj" />
   </ItemGroup>
 
 </Project>

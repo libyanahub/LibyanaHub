@@ -8,7 +8,7 @@ namespace LibyanaHub.Services.Infrastructure.Repository
 		private AppDbContext _db;
 		public IFitnessCategoryRepository FitnessCategory { get; private set; }
 		public IApplicationUserRepository ApplicationUser { get; private set; }
-
+		public ICourseRepository Course { get; private set; }
 
 		public DbUnitOfWork(AppDbContext db)
 		{
@@ -18,7 +18,7 @@ namespace LibyanaHub.Services.Infrastructure.Repository
 
 			ApplicationUser = new ApplicationUserRepository(_db);
 
-
+			Course = new CourseRepository(_db);
 		}
 	}
 }
