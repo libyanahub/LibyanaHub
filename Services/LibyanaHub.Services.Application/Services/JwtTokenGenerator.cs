@@ -1,13 +1,13 @@
 ﻿using LibyanaHub.Services.Application.IServices;
 using LibyanaHub.Services.Domain.Entities.Identity;
-using Mango.Services.AuthAPI.Models;
+using LibyanaHub.Services.Models.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Mango.Services.AuthAPI.Service
+namespace LibyanaHub.Services.Application.Services
 {
 	public class JwtTokenGenerator : IJwtTokenGenerator
 	{

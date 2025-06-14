@@ -1,29 +1,28 @@
 ﻿using LibyanaHub.Services.Application.IServices;
-using LibyanaHub.Services.Models.Course;
 using LibyanaHub.Services.Models.Helper;
 using LibyanaHub.Services.Models.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibyanaHub.Services.WebApi.Controllers
 {
-	public class CourseController : ControllerBase
+	public class FitnessCategoryController : ControllerBase
 	{
 		private readonly IUnitOfServices _unitOfServices;
 
 		protected ResponseDto _response;
 
-		public CourseController(IUnitOfServices unitOfServices)
+		public FitnessCategoryController(IUnitOfServices unitOfServices)
 		{
 			_unitOfServices = unitOfServices;
 			_response = new();
 		}
 
-		[HttpGet("GetCourse")]
-		public async Task<IActionResult> Get(Guid courseID)
+		[HttpGet("GetFitCategory")]
+		public async Task<IActionResult> Get(Guid fitnessCat_Id)
 		{
 			try
 			{
-				var response = await _unitOfServices.CourseService.GetByIdAsync(courseID);
+				var response = await _unitOfServices.FitnessCategoryService.GetByIdAsync(fitnessCat_Id);
 
 				if (response.IsSuccess)
 					return Ok(response);
@@ -35,12 +34,12 @@ namespace LibyanaHub.Services.WebApi.Controllers
 			}
 		}
 
-		[HttpGet("GetAllCourses")]
+		[HttpGet("GetAllFitCategory")]
 		public async Task<IActionResult> GetAll(PaginatedModel paginatedModel)
 		{
 			try
 			{
-				var response = await _unitOfServices.CourseService.GetAllAsync(paginatedModel);
+				var response = await _unitOfServices.FitnessCategoryService.GetAllAsync(paginatedModel);
 
 				if (response.IsSuccess)
 					return Ok(response);
@@ -52,12 +51,12 @@ namespace LibyanaHub.Services.WebApi.Controllers
 			}
 		}
 
-		[HttpPost("CreateCourse")]
-		public async Task<IActionResult> Create([FromBody] Input inputCourse)
+		[HttpPost("CreateFitnessCategory")]
+		public async Task<IActionResult> Create([FromBody] LibyanaHub.Services.Models.FitnessCategory.Input inputFitnessCat)
 		{
 			try
 			{
-				var response = await _unitOfServices.CourseService.AddAsync(inputCourse);
+				var response = await _unitOfServices.FitnessCategoryService.AddAsync(inputFitnessCat);
 
 				if (response.IsSuccess)
 					return Ok(response);
@@ -70,12 +69,12 @@ namespace LibyanaHub.Services.WebApi.Controllers
 		}
 
 
-		[HttpPut("UpdateCourse")]
-		public async Task<IActionResult> Update([FromBody] Input updateCourse)
+		[HttpPut("UpdateFitnessCategory")]
+		public async Task<IActionResult> Update([FromBody] LibyanaHub.Services.Models.FitnessCategory.Input updateFitnessCat)
 		{
 			try
 			{
-				var response = await _unitOfServices.CourseService.UpdateAsync(updateCourse);
+				var response = await _unitOfServices.FitnessCategoryService.UpdateAsync(updateFitnessCat);
 
 				if (response.IsSuccess)
 					return Ok(response);
@@ -87,12 +86,12 @@ namespace LibyanaHub.Services.WebApi.Controllers
 			}
 		}
 
-		[HttpDelete("DeleteCourse")]
-		public async Task<IActionResult> Delete(Guid courseID)
+		[HttpDelete("DeleteFitCategory")]
+		public async Task<IActionResult> Delete(Guid fitnessCat_Id)
 		{
 			try
 			{
-				var response = await _unitOfServices.CourseService.DeleteAsync(courseID);
+				var response = await _unitOfServices.FitnessCategoryService.DeleteAsync(fitnessCat_Id);
 
 				if (response.IsSuccess)
 					return Ok(response);

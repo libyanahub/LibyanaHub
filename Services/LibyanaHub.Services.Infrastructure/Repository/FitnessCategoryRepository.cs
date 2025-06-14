@@ -15,9 +15,25 @@ namespace LibyanaHub.Services.Infrastructure.Repository
 
 		}
 
-		public void Update(FitnessCategory fitnessCategory)
+		public async Task Update(FitnessCategory fitnessCategory)
 		{
-			//_dbContext.FitnessCategories.Update(fitnessCategory);
+			if (fitnessCategory == null)
+			{
+				throw new ArgumentNullException(nameof(fitnessCategory));
+			}
+
+			var existingCourse = _dbContext.FitnessCategories.FirstOrDefault(c => c.Id == fitnessCategory.Id);
+			if (existingCourse != null)
+			{
+				existingCourse.Name = fitnessCategory.Name;
+				existingCourse.Description = fitnessCategory.Description;
+				existingCourse.IconUrl = fitnessCategory.IconUrl;
+				existingCourse.ImageUrl = fitnessCategory.ImageUrl;
+
+				
+				_dbContext.FitnessCategories.Update(existingCourse);
+				await _dbContext.SaveChangesAsync();
+			}
 		}
 	}
 }

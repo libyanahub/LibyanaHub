@@ -4,6 +4,6 @@ namespace LibyanaHub.Services.Infrastructure.IRepository
 {
     public interface IFitnessCategoryRepository : IRepository<FitnessCategory>
 	{
-		void Update(FitnessCategory fitnessCategory);
+		Task Update(FitnessCategory fitnessCategory);
 	}
 }

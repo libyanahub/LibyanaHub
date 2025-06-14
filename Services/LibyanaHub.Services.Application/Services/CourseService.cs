@@ -22,7 +22,7 @@ namespace LibyanaHub.Services.Application.Services
 			_response = new();
 		}
 
-		public async Task<ResponseDto> GetAllCoursesAsync(PaginatedModel paginatedModel)
+		public async Task<ResponseDto> GetAllAsync(PaginatedModel paginatedModel)
 		{
 			try
 			{
@@ -54,7 +54,7 @@ namespace LibyanaHub.Services.Application.Services
 			}
 		}
 
-		public async Task<ResponseDto> GetCourseByIdAsync(Guid courseId)
+		public async Task<ResponseDto> GetByIdAsync(Guid courseId)
 		{
 			try
 			{
@@ -89,7 +89,7 @@ namespace LibyanaHub.Services.Application.Services
 			}
 		}
 
-		public async Task<ResponseDto> AddCourseAsync(Input course)
+		public async Task<ResponseDto> AddAsync(Input course)
 		{
 			course.Id = new();
 
@@ -137,9 +137,8 @@ namespace LibyanaHub.Services.Application.Services
 			}
 		}
 
-		
-
-		public async Task<ResponseDto> UpdateCourseAsync(Input courseNew)
+	
+		public async Task<ResponseDto> UpdateAsync(Input courseNew)
 		{
 			try
 			{
@@ -190,7 +189,7 @@ namespace LibyanaHub.Services.Application.Services
 
 		//
 
-		public async Task<ResponseDto> DeleteCourseAsync(Guid courseId)
+		public async Task<ResponseDto> DeleteAsync(Guid courseId)
 		{
 			try
 			{
@@ -203,15 +202,19 @@ namespace LibyanaHub.Services.Application.Services
 
 				Course Course = await _unitOfWork.Course.GetFirstOrDefault(c => c.Id == courseId);
 
-				_unitOfWork.Course.Remove(Course);
+				if (Course == null)
+				{
+					_response.IsSuccess = false;
+					_response.Message = "not found";
+					return _response;
+				}
 
-				await _unitOfWork.Course.Save();
+				await _unitOfWork.Course.Remove(Course);
 
 				return _response;
 			}
 			catch (Exception ex)
 			{
-				string detail = ex.InnerException.ToString();
 
 				_response.IsSuccess = false;
 				_response.Message = ex.Message;

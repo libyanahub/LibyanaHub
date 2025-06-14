@@ -81,9 +81,10 @@ namespace LibyanaHub.Services.Infrastructure.Repository
 			return result;
 		}
 
-		public void Remove(T entity)
+		public async Task<bool> Remove(T entity)
 		{
 			dbSet.Remove(entity);
+			return await Save();
 		}
 
 		public void RemoveRange(IEnumerable<T> entity)

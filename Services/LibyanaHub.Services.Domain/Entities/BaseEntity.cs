@@ -8,6 +8,9 @@ namespace LibyanaHub.Services.Domain.Entities
 		public DateTime CreateDate { get; private set; }
 		public DateTime UpdateDate { get; private set; }
 
+		public Guid UserId { get; set; }
+
+
 		public void SetCreated()
 		{
 			if (CreateDate == default)

@@ -1,19 +1,16 @@
-using LibyanaHub.Services.Application.IServices;
+﻿using LibyanaHub.Services.Application.IServices;
 using LibyanaHub.Services.Application.Services;
 using LibyanaHub.Services.Domain.Entities.Identity;
 using LibyanaHub.Services.Infrastructure.Data;
 using LibyanaHub.Services.Infrastructure.DbInitializer;
 using LibyanaHub.Services.Infrastructure.IRepository;
 using LibyanaHub.Services.Infrastructure.Repository;
+using LibyanaHub.Services.Models.User;
 using LibyanaHub.Services.WebApi.Extensions;
-using Mango.Services.AuthAPI.Models;
-using Mango.Services.AuthAPI.Service;
+using LibyanaHub.Services.WebApi.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using static LibyanaHub.Services.WebApi.Helper.SwaggerExampleSchema;
 
 
 
@@ -25,6 +22,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // 1) Controllers
 builder.Services.AddControllers();
+
+
+// Add your new exception handler service here
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>(); // <--- ADD THIS
+builder.Services.AddProblemDetails(); // <--- ADD THIS (Good practice to include)
+
+
 
 // 2) EF Core
 builder.Services.AddDbContext<AppDbContext>(options => { });
@@ -49,28 +53,70 @@ builder.Services.AddScoped<IUnitOfServices, UnitOfServices>();
 
 // 6) Swagger + JWT UI
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen(c =>
+//{
+//	c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+//	{
+//		Name = "Authorization",
+//		In = ParameterLocation.Header,
+//		Type = SecuritySchemeType.ApiKey,
+//		Scheme = "Bearer",
+//		Description = "Enter: Bearer {your JWT token}"
+//	});
+//	c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+//	  {
+//		new OpenApiSecurityScheme {
+//		  Reference = new OpenApiReference {
+//			Type = ReferenceType.SecurityScheme,
+//			Id   = JwtBearerDefaults.AuthenticationScheme
+//		  }
+//		},
+//		Array.Empty<string>()
+//	  }
+//	});
+//});
+
+
 builder.Services.AddSwaggerGen(c =>
 {
+	// جعل Swagger يستخدم الاسم الكامل مع النيم سبيس كـ SchemaId لتجنب التعارض
+	c.CustomSchemaIds(type => type.FullName.Replace('+', '.'));
+
+	// تعريف JWT Bearer Authentication في Swagger
 	c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
 	{
 		Name = "Authorization",
 		In = ParameterLocation.Header,
 		Type = SecuritySchemeType.ApiKey,
 		Scheme = "Bearer",
-		Description = "Enter: Bearer {your JWT token}"
+		BearerFormat = "JWT",
+		Description = "Enter 'Bearer' followed by your JWT token, e.g. \"Bearer abcdef12345\""
 	});
-	c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-	  {
-		new OpenApiSecurityScheme {
-		  Reference = new OpenApiReference {
-			Type = ReferenceType.SecurityScheme,
-			Id   = JwtBearerDefaults.AuthenticationScheme
-		  }
-		},
-		Array.Empty<string>()
-	  }
+
+	// إضافة متطلبات الأمان على كل endpoints
+	c.AddSecurityRequirement(new OpenApiSecurityRequirement
+	{
+		{
+			new OpenApiSecurityScheme
+			{
+				Reference = new OpenApiReference
+				{
+					Type = ReferenceType.SecurityScheme,
+					Id = JwtBearerDefaults.AuthenticationScheme
+				},
+				Scheme = "Bearer",
+				Name = "Authorization",
+				In = ParameterLocation.Header
+			},
+			Array.Empty<string>()
+		}
 	});
+
+	// باقي إعدادات Swagger إذا عندك...
 });
+
+
+
 
 // 7) **Only call your extension once** to hook up the Bearer scheme
 builder.AddAppAuthetication();
@@ -82,6 +128,8 @@ builder.AddAppAuthetication();
 
 
 var app = builder.Build();
+
+app.UseExceptionHandler(_ => { });
 
 // 8) Pipeline
 if (app.Environment.IsDevelopment() ||

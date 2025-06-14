@@ -9,5 +9,7 @@
 		IKannelService KannelService { get; }
 
 		ICourseService CourseService { get; }
+
+		IFitnessCategoryService FitnessCategoryService { get; }
 	}
 }
