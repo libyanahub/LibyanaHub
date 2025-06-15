@@ -31,7 +31,8 @@ builder.Services.AddProblemDetails(); // <--- ADD THIS (Good practice to include
 
 
 // 2) EF Core
-builder.Services.AddDbContext<AppDbContext>(options => { });
+//builder.Services.AddDbContext<AppDbContext>(options => { });
+builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
 
 
 
@@ -45,6 +46,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
 	.AddDefaultTokenProviders();
 
 // 5) Application services
+builder.Services.AddHttpContextAccessor(); // For IHttpContextAccessor in services
+
 builder.Services.AddScoped<IDbUnitOfWork, DbUnitOfWork>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IUnitOfServices, UnitOfServices>();

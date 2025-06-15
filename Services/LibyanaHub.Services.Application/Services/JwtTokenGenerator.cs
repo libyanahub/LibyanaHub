@@ -35,7 +35,7 @@ namespace LibyanaHub.Services.Application.Services
 			var descriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
-				Expires = DateTime.UtcNow.AddSeconds(30),
+				Expires = DateTime.UtcNow.AddDays(1),
 				Issuer = _jwtOptions.Issuer,
 				Audience = _jwtOptions.Audience,
 				SigningCredentials = new SigningCredentials(

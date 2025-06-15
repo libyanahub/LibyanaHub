@@ -5,17 +5,22 @@ using LibyanaHub.Services.Models.FitnessCategory;
 using LibyanaHub.Services.Models.Helper;
 using LibyanaHub.Services.Models.User;
 using Mapster;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace LibyanaHub.Services.Application.Services
 {
 	public class FitnessCategoryService : IFitnessCategoryService
 	{
+		private readonly IHttpContextAccessor _httpContextAccessor;
+
 		private readonly IDbUnitOfWork _unitOfWork;
 
 		protected ResponseDto _response;
 
-		public FitnessCategoryService(IDbUnitOfWork unitOfWork, IUnitOfServices unitOfServices)
+		public FitnessCategoryService(IDbUnitOfWork unitOfWork, IUnitOfServices unitOfServices, IHttpContextAccessor httpContextAccessor)
 		{
+			_httpContextAccessor = httpContextAccessor;
 			_unitOfWork = unitOfWork;
 			_response = new();
 		}
@@ -91,7 +96,9 @@ namespace LibyanaHub.Services.Application.Services
 		{
 			fitness_Cat.Id = new();
 
-			try 
+			Guid.TryParse(_httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid userId);
+
+			try
 			{
 				if (fitness_Cat == null)
 				{
@@ -108,10 +115,9 @@ namespace LibyanaHub.Services.Application.Services
 					return _response;
 				}
 
-
-
 				FitnessCategory Fitness_Cat = fitness_Cat.Adapt<FitnessCategory>();
 
+				Fitness_Cat.UserId = userId;
 				Fitness_Cat.SetCreated();
 
 				bool b = await _unitOfWork.FitnessCategory.Add(Fitness_Cat);
@@ -120,7 +126,7 @@ namespace LibyanaHub.Services.Application.Services
 
 				return _response;
 			}
-			catch (Exception ex) 
+			catch (Exception ex)
 			{
 				string detail = ex.InnerException.ToString();
 

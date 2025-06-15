@@ -1,6 +1,7 @@
 using LibyanaHub.Shared.StaticData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LibyanaHub.Services.WebApi.Controllers;
 
@@ -25,6 +26,9 @@ public class WeatherForecastController : ControllerBase
 	[Authorize(Roles = SD.Roles.Admin)]
 	public IEnumerable<WeatherForecast> GetAdminForecast()
 	{
+		// Inside your controller method...
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
 		return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 		{
 			Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

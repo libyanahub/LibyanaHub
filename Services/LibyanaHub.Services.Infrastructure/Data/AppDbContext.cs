@@ -11,36 +11,29 @@ namespace LibyanaHub.Services.Infrastructure.Data
 	public class AppDbContext
 		: IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 	{
-		private readonly IConfiguration _config;
 
 		// Design-time constructor
 		public AppDbContext(DbContextOptions<AppDbContext> options)
 			: base(options)
-		{ }
-
-		// Runtime constructor (if you still read config for connection strings)
-		public AppDbContext(IConfiguration config, DbContextOptions<AppDbContext> options)
-			: base(options)
 		{
-			_config = config;
+		
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			if (_config != null && !optionsBuilder.IsConfigured)
+			if (!optionsBuilder.IsConfigured)
 			{
-				if (_config.GetSection("ASPNETCORE_ENVIRONMENT").Value == "Development")
-                {
-                    if (Environment.MachineName.ToLower() == "HQB-L3-18101974".ToLower())
-                    {
-                        optionsBuilder.UseSqlServer("Server=HQB-L3-18101974\\SHEHOBSQLSER;Database=LibyanaHubTest;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
-                    }
-                    else
-                    {
-                        optionsBuilder.UseSqlServer("Server=localhost\\mshehobsql,1433;Database=LibyanaHubTest;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
-                    }
-                }
-                else
+				var currentUser = Environment.UserName;
+
+				if (currentUser.ToLower() == "MAHMO".ToLower())
+				{
+					optionsBuilder.UseSqlServer("Server=localhost\\mshehobsql,1433;Database=LibyanaHubTest;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
+				}
+				else if (currentUser.ToLower() == "HQB-L3-18101974".ToLower())
+				{
+					optionsBuilder.UseSqlServer("Server=HQB-L3-18101974\\SHEHOBSQLSER;Database=LibyanaHubTest;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
+				}
+				else
 				{
 					optionsBuilder.UseSqlServer("Server=localhost\\mshehobsql,1433;Database=LibyanaHubProd;User ID=vs_shehob;Password=vs_sh123;TrustServerCertificate=true;Encrypt=false;MultipleActiveResultSets=true");
 				}

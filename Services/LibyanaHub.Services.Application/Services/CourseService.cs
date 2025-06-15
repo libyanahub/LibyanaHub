@@ -5,19 +5,24 @@ using LibyanaHub.Services.Models.Course;
 using LibyanaHub.Services.Models.Helper;
 using LibyanaHub.Services.Models.User;
 using Mapster;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace LibyanaHub.Services.Application.Services
 {
 	public class CourseService : ICourseService
 	{
+		private readonly IHttpContextAccessor _httpContextAccessor;
+
 		private readonly IDbUnitOfWork _unitOfWork;
 
 		protected ResponseDto _response;
 
-		public CourseService(IDbUnitOfWork unitOfWork, IUnitOfServices unitOfServices)
+		public CourseService(IDbUnitOfWork unitOfWork, IUnitOfServices unitOfServices, IHttpContextAccessor httpContextAccessor)
 		{
+			_httpContextAccessor = httpContextAccessor;
 			_unitOfWork = unitOfWork;
 			_response = new();
 		}
@@ -93,7 +98,9 @@ namespace LibyanaHub.Services.Application.Services
 		{
 			course.Id = new();
 
-			try 
+			Guid.TryParse(_httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid userId);
+
+			try
 			{
 				if (course == null)
 				{
@@ -118,6 +125,7 @@ namespace LibyanaHub.Services.Application.Services
 
 				Course Course = course.Adapt<Course>();
 
+				Course.UserId = userId;
 				Course.SetCreated();
 
 				bool b = await _unitOfWork.Course.Add(Course);
@@ -137,7 +145,6 @@ namespace LibyanaHub.Services.Application.Services
 			}
 		}
 
-	
 		public async Task<ResponseDto> UpdateAsync(Input courseNew)
 		{
 			try
@@ -187,8 +194,6 @@ namespace LibyanaHub.Services.Application.Services
 			}
 		}
 
-		//
-
 		public async Task<ResponseDto> DeleteAsync(Guid courseId)
 		{
 			try
@@ -222,7 +227,5 @@ namespace LibyanaHub.Services.Application.Services
 				return _response;
 			}
 		}
-
 	}
-
 }
