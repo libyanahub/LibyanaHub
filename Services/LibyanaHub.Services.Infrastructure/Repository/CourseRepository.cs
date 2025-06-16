@@ -9,6 +9,7 @@ namespace LibyanaHub.Services.Infrastructure.Repository
 	{
 		private readonly AppDbContext _dbContext;
 
+
 		public CourseRepository(AppDbContext dbContext) : base(dbContext)
 		{
 			_dbContext = dbContext;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LibyanaHub.Services.Infrastructure.IRepository
+﻿namespace LibyanaHub.Services.Infrastructure.IRepository
 {
     public interface IDbUnitOfWork
     {
@@ -13,5 +7,10 @@ namespace LibyanaHub.Services.Infrastructure.IRepository
 		IApplicationUserRepository ApplicationUser { get; }
 
 		ICourseRepository Course { get; }
+
+
+		ICoachRepository Coach { get; }
+		ITraineeRepository Trainee { get; }
+		IUserDomainRepository UserDomain { get; }
 	}
 }

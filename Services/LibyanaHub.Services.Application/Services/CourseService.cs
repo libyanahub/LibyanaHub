@@ -156,7 +156,7 @@ namespace LibyanaHub.Services.Application.Services
 					return _response;
 				}
 
-				if (await _unitOfWork.Course.IsCheckDuplicateAsync(c => c.Title.ToLower() == courseNew.Title.ToLower()))
+				if (await _unitOfWork.Course.IsCheckDuplicateAsync(c => c.Title.ToLower() == courseNew.Title.ToLower() && c.Id != courseNew.Id))
 				{
 					_response.IsSuccess = false;
 					_response.Message = "This Course Title Existed";
@@ -198,13 +198,6 @@ namespace LibyanaHub.Services.Application.Services
 		{
 			try
 			{
-				if (courseId == null)
-				{
-					_response.IsSuccess = false;
-					_response.Message = "not found";
-					return _response;
-				}
-
 				Course Course = await _unitOfWork.Course.GetFirstOrDefault(c => c.Id == courseId);
 
 				if (Course == null)

@@ -8,6 +8,7 @@ namespace LibyanaHub.Services.Infrastructure.Repository
 	public class Repository<T> : IRepository<T> where T : class
 	{
 		private readonly AppDbContext _context;
+
 		internal DbSet<T> dbSet;
 
 		public Repository(AppDbContext context)

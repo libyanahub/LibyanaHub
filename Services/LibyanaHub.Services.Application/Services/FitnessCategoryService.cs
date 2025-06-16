@@ -148,7 +148,7 @@ namespace LibyanaHub.Services.Application.Services
 					return _response;
 				}
 
-				if (await _unitOfWork.Course.IsCheckDuplicateAsync(c => c.Title.ToLower() == fitness_CatNew.Name.ToLower()))
+				if (await _unitOfWork.FitnessCategory.IsCheckDuplicateAsync(c => c.Name.ToLower() == fitness_CatNew.Name.ToLower() && c.Id != fitness_CatNew.Id))
 				{
 					_response.IsSuccess = false;
 					_response.Message = "This Course Title Existed";
@@ -189,13 +189,6 @@ namespace LibyanaHub.Services.Application.Services
 		{
 			try
 			{
-				if (fitnessCat_Id == null)
-				{
-					_response.IsSuccess = false;
-					_response.Message = "not found";
-					return _response;
-				}
-
 				FitnessCategory fitnessCat = await _unitOfWork.FitnessCategory.GetFirstOrDefault(c => c.Id == fitnessCat_Id);
 
 				await _unitOfWork.FitnessCategory.Remove(fitnessCat);

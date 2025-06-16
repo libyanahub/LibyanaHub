@@ -3,6 +3,7 @@ using LibyanaHub.Services.Application.Services;
 using LibyanaHub.Services.Domain.Entities.Identity;
 using LibyanaHub.Services.Infrastructure.Data;
 using LibyanaHub.Services.Infrastructure.DbInitializer;
+using LibyanaHub.Services.Infrastructure.Extensions;
 using LibyanaHub.Services.Infrastructure.IRepository;
 using LibyanaHub.Services.Infrastructure.Repository;
 using LibyanaHub.Services.Models.User;
@@ -33,7 +34,7 @@ builder.Services.AddProblemDetails(); // <--- ADD THIS (Good practice to include
 // 2) EF Core
 //builder.Services.AddDbContext<AppDbContext>(options => { });
 builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
-
+//builder.Services.AddInfrastructureDBs(builder.Configuration);
 
 
 // 3) JWT settings

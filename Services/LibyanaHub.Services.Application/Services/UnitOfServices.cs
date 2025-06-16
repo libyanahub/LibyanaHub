@@ -19,9 +19,13 @@ namespace LibyanaHub.Services.Application.Services
 		public IJwtTokenGenerator JwtTokenGenerator { get; set; }
 		public ICourseService CourseService { get; set; }
 		public IFitnessCategoryService FitnessCategoryService { get; set; }
-		
-		
-		
+
+		public ITraineeService TraineeService { get; set; }
+		public IUserDomainService UserDomainService { get; set; }
+		public ICoachService CoachService { get; set; }
+
+
+
 		public UnitOfServices(
 			IHttpContextAccessor httpContextAccessor,
 			IConfiguration config ,
@@ -41,6 +45,12 @@ namespace LibyanaHub.Services.Application.Services
 			CourseService = new CourseService(dbUnitOfWork, this, _httpContextAccessor);
 
 			FitnessCategoryService = new FitnessCategoryService(dbUnitOfWork, this, _httpContextAccessor);
+
+			TraineeService = new TraineeService(dbUnitOfWork, this, _httpContextAccessor);
+			UserDomainService = new UserDomainService(dbUnitOfWork, this, _httpContextAccessor);
+			CoachService = new CoachService(dbUnitOfWork, this, _httpContextAccessor);
+
+
 		}
 	}
 }

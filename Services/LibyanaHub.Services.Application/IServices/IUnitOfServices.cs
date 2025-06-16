@@ -1,4 +1,6 @@
-﻿namespace LibyanaHub.Services.Application.IServices
+﻿using LibyanaHub.Services.Application.IServices;
+
+namespace LibyanaHub.Services.Application.IServices
 {
 	public interface IUnitOfServices
 	{		
@@ -11,5 +13,14 @@
 		ICourseService CourseService { get; }
 
 		IFitnessCategoryService FitnessCategoryService { get; }
+
+		ITraineeService TraineeService { get; }
+
+
+		IUserDomainService UserDomainService { get; }
+
+
+		ICoachService CoachService { get; }
+
 	}
 }
